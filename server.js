@@ -18,7 +18,7 @@ const io = socketIo(server, {
     maxHttpBufferSize: 5e6 // 5MB for large screenshots
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3050; // Fallback to 3050 to match Dockerfile
 
 // Middleware
 app.use(cors());
@@ -123,13 +123,25 @@ app.get('/api/connections/active', (req, res) => {
 });
 
 // Serve dashboard
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dashboard/index.html'));
-});
+const serveDashboard = (req, res) => {
+    const indexPath = path.join(__dirname, 'dashboard/index.html');
+    if (require('fs').existsSync(indexPath)) {
+        res.sendFile(indexPath);
+    } else {
+        res.status(404).send(`
+            <div style="font-family: sans-serif; padding: 50px; text-align: center;">
+                <h1 style="color: #ff4444;">🚨 Dashboard no encontrado</h1>
+                <p>El archivo <code>dashboard/index.html</code> no existe en el servidor.</p>
+                <p>Asegúrate de haber ejecutado <code>npm run build</code> en el frontend y copiado los archivos a la carpeta <code>server/dashboard</code>.</p>
+                <hr>
+                <p style="color: #777;">Monitox Pro Server v1.0.0</p>
+            </div>
+        `);
+    }
+};
 
-app.get('/dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dashboard/index.html'));
-});
+app.get('/', serveDashboard);
+app.get('/dashboard', serveDashboard);
 
 // 404 handler
 app.use((req, res) => {

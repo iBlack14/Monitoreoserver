@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MONITOX PRO | Admin Control</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@400;700&display=swap"
+    rel="stylesheet">
+  <script type="module" crossorigin src="/assets/index-WQmWk-bf.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-cXW3RNmh.css">
+</head>
+
+<body>
+  <div id="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo-icon">M</div>
+        <h1>MONITOX <span>PRO</span></h1>
+      </div>
+      <nav>
+        <div class="nav-item active" data-tab="dashboard">
+          <span class="icon">📊</span> Dashboard
+        </div>
+        <div class="nav-item" data-tab="clients">
+          <span class="icon">💻</span> Equipos
+        </div>
+        <div class="nav-item" data-tab="logs">
+          <span class="icon">📜</span> Registros
+        </div>
+        <div class="nav-item" data-tab="settings">
+          <span class="icon">⚙️</span> Configuración
+        </div>
+      </nav>
+      <div class="status-panel">
+        <div class="status-item">
+          <span>Servidor:</span>
+          <span class="status-indicator online">ONLINE</span>
+        </div>
+        <div class="status-item">
+          <span>Activos:</span>
+          <span id="active-count">0</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="top-bar">
+        <div class="search-box">
+          <input type="text" placeholder="Buscar equipo..." id="search-input">
+        </div>
+        <div class="user-profile">
+          <span class="role">MODO ADMIN</span>
+          <div class="avatar">A</div>
+        </div>
+      </header>
+
+      <section class="grid-container" id="client-grid">
+        <!-- Dashboard dynamic content -->
+      </section>
+    </main>
+  </div>
+</body>
+
+</html>

@@ -125,16 +125,43 @@ app.get('/api/connections/active', (req, res) => {
 // Serve dashboard
 const serveDashboard = (req, res) => {
     const indexPath = path.join(__dirname, 'dashboard/index.html');
-    if (require('fs').existsSync(indexPath)) {
+    const fs = require('fs');
+
+    if (fs.existsSync(indexPath)) {
         res.sendFile(indexPath);
     } else {
+        // Listamos archivos para debugear en el log de Easypanel
+        const filesInApp = fs.readdirSync(__dirname);
+        const dashboardExists = fs.existsSync(path.join(__dirname, 'dashboard'));
+        let dashboardFiles = [];
+        if (dashboardExists) {
+            dashboardFiles = fs.readdirSync(path.join(__dirname, 'dashboard'));
+        }
+
+        console.error('--- DEBUG DASHBOARD ---');
+        console.error('Directorio actual:', __dirname);
+        console.error('Archivos en /app:', filesInApp);
+        console.error('¿Existe carpeta dashboard?:', dashboardExists);
+        if (dashboardExists) console.error('Archivos en /dashboard:', dashboardFiles);
+        console.error('-----------------------');
+
         res.status(404).send(`
-            <div style="font-family: sans-serif; padding: 50px; text-align: center;">
-                <h1 style="color: #ff4444;">🚨 Dashboard no encontrado</h1>
-                <p>El archivo <code>dashboard/index.html</code> no existe en el servidor.</p>
-                <p>Asegúrate de haber ejecutado <code>npm run build</code> en el frontend y copiado los archivos a la carpeta <code>server/dashboard</code>.</p>
-                <hr>
-                <p style="color: #777;">Monitox Pro Server v1.0.0</p>
+            <div style="font-family: sans-serif; padding: 50px; text-align: center; background: #1a1a1a; color: white; min-height: 100vh;">
+                <h1 style="color: #ff4444; font-size: 3rem;">🚨 Dashboard no encontrado</h1>
+                <p style="font-size: 1.2rem;">El archivo <code>dashboard/index.html</code> no existe en el contenedor.</p>
+                
+                <div style="background: #333; padding: 20px; border-radius: 8px; display: inline-block; text-align: left; margin: 20px 0;">
+                    <p><strong>Estado del sistema:</strong></p>
+                    <ul>
+                        <li>Ruta actual: <code>${__dirname}</code></li>
+                        <li>Carpeta dashboard: <code>${dashboardExists ? '✅ Existe' : '❌ NO existe'}</code></li>
+                        <li>Archivos en dashboard: <code>${dashboardFiles.length > 0 ? dashboardFiles.join(', ') : 'Ninguno'}</code></li>
+                    </ul>
+                </div>
+
+                <p>Asegúrate de haber ejecutado <code>npm run build</code> localmente y haber hecho <code>git push</code> de la carpeta <code>server/dashboard</code>.</p>
+                <hr style="border: 0; border-top: 1px solid #444; margin: 40px 0;">
+                <p style="color: #777;">Monitox Pro Server v1.0.1 | Debug Mode</p>
             </div>
         `);
     }

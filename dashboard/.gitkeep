@@ -1,0 +1,3 @@
+# Evitar que Git ignore esta carpeta si está vacía
+*
+!.gitkeep

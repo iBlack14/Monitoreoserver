@@ -13,9 +13,14 @@ const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
         origin: '*',
-        methods: ['GET', 'POST']
+        methods: ['GET', 'POST'],
+        credentials: true
     },
-    maxHttpBufferSize: 5e6 // 5MB for large screenshots
+    path: '/socket.io/',
+    transports: ['websocket', 'polling'], // Permitir ambos para compatibilidad con proxies
+    maxHttpBufferSize: 5e6, // 5MB for large screenshots
+    pingTimeout: 60000,
+    pingInterval: 25000
 });
 
 const PORT = process.env.PORT || 3050; // Fallback to 3050 to match Dockerfile

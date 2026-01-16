@@ -4,7 +4,8 @@ const fs = require('fs');
 const bcrypt = require('bcryptjs');
 
 // Configuración de la ruta de la base de datos
-const dbPath = path.join(__dirname, 'monitox.db');
+// En Docker buscamos en /app/data/monitox.db, localmente en el directorio actual
+const dbPath = process.env.DB_PATH || path.join(__dirname, 'monitox.db');
 const db = new Database(dbPath);
 
 // Inicializar la base de datos

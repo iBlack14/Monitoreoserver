@@ -1,4 +1,5 @@
 const { validateApiKey, getClientByApiKey, verifyToken } = require('./auth');
+const { deviceOps, logOps } = require('./database');
 
 // Store active connections
 const activeClients = new Map();
@@ -32,6 +33,10 @@ function setupSocketHandlers(io) {
             activeClients.set(socket.id, clientData);
             socket.clientData = clientData;
             socket.join('clients');
+
+            // Persistence: Upsert device to DB
+            deviceOps.upsert(socket.id, client.name, JSON.stringify(clientInfo));
+            logOps.add(socket.id, 'success', `Dispositivo conectado: ${client.name}`);
 
             console.log(`[Client] Autenticado: ${client.name} (${socket.id})`);
 
@@ -134,6 +139,37 @@ function setupSocketHandlers(io) {
             }
         });
 
+        // Terminal Remota: Proxy de Admin a Cliente
+        socket.on('terminal-command', (data) => {
+            if (!socket.isAdmin) return;
+            const { targetSocketId, command } = data;
+            const targetSocket = io.sockets.sockets.get(targetSocketId);
+
+            if (targetSocket) {
+                // Loguear el comando en la DB
+                logOps.add(targetSocketId, 'info', `Terminal: ${command}`);
+
+                targetSocket.emit('terminal-command', {
+                    command,
+                    adminSocketId: socket.id
+                });
+            }
+        });
+
+        // Terminal Remota: Proxy de Cliente a Admin
+        socket.on('terminal-output', (data) => {
+            const { adminSocketId, output, command } = data;
+            const adminSocket = io.sockets.sockets.get(adminSocketId);
+
+            if (adminSocket) {
+                adminSocket.emit('terminal-output', {
+                    output,
+                    command,
+                    clientSocketId: socket.id
+                });
+            }
+        });
+
         // Handle disconnection
         socket.on('disconnect', () => {
             console.log(`[Socket] Desconexión: ${socket.id}`);
@@ -143,6 +179,7 @@ function setupSocketHandlers(io) {
                 const client = activeClients.get(socket.id);
                 activeClients.delete(socket.id);
 
+                logOps.add(socket.id, 'warn', `Dispositivo desconectado: ${client.name}`);
                 console.log(`[Client] Desconectado: ${client.name}`);
 
                 // Notify admins

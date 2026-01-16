@@ -7,6 +7,10 @@ require('dotenv').config();
 
 const auth = require('./auth');
 const { setupSocketHandlers } = require('./socketHandler');
+const { initDb, deviceOps, logOps } = require('./database');
+
+// Iniciar DB
+initDb();
 
 const app = express();
 const server = http.createServer(app);
@@ -89,13 +93,25 @@ app.post('/api/clients/register', (req, res) => {
     });
 });
 
-// Get all registered clients
+// Get all registered clients (from Memory)
 app.get('/api/clients', (req, res) => {
     const clients = auth.getAllClients();
     res.json({
         success: true,
         clients
     });
+});
+
+// NUEVO: Get all devices from DB
+app.get('/api/db/devices', (req, res) => {
+    const devices = deviceOps.getAll();
+    res.json({ success: true, devices });
+});
+
+// NUEVO: Get latest logs from DB
+app.get('/api/db/logs', (req, res) => {
+    const logs = logOps.getLatest(50);
+    res.json({ success: true, logs });
 });
 
 // Deactivate a client
@@ -197,25 +213,15 @@ server.listen(PORT, () => {
     console.log(`
 ╔═══════════════════════════════════════════════════════════╗
 ║                                                           ║
-║   🟢 SISTEMA DE MONITOREO EN TIEMPO REAL                 ║
+║   🟢 MONITOX PRO | SISTEMA DE MONITOREO PERSISTENTE      ║
 ║                                                           ║
 ║   Servidor corriendo en: http://localhost:${PORT}         ║
 ║   Dashboard: http://localhost:${PORT}/dashboard           ║
 ║                                                           ║
-║   Estado: ACTIVO ✓                                       ║
+║   Base de Datos: SQLite ACTIVA ✓                          ║
 ║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
   `);
-
-    // Generate a default API key for testing
-    const defaultApiKey = auth.generateApiKey('Cliente-Demo', {
-        location: 'Test',
-        description: 'Cliente de prueba generado automáticamente'
-    });
-
-    console.log('\n📋 API Key de prueba generada:');
-    console.log(`   ${defaultApiKey}`);
-    console.log('\n');
 });
 
 // Graceful shutdown

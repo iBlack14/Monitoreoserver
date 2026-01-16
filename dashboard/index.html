@@ -10,29 +10,58 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@400;700&display=swap"
     rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-2TMRGvqZ.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-cXW3RNmh.css">
+  <script type="module" crossorigin src="/assets/index-C_hBlBml.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-Behl8UJw.css">
 </head>
 
 <body>
-  <div id="app">
+  <!-- Login Screen -->
+  <div id="login-screen" class="login-overlay">
+    <div class="login-box">
+      <div class="login-header">
+        <div class="login-logo">M</div>
+        <h2>MONITOX <span>PRO</span></h2>
+        <p>CONSOLA DE ADMINISTRACIÓN</p>
+      </div>
+      <div class="login-form">
+        <div class="input-group">
+          <label>Usuario</label>
+          <input type="text" id="username" placeholder="Ingrese su usuario">
+        </div>
+        <div class="input-group">
+          <label>Contraseña</label>
+          <input type="password" id="password" placeholder="••••••••">
+        </div>
+        <button id="login-btn" class="btn btn-primary login-btn">INGRESAR AL SISTEMA</button>
+      </div>
+      <div class="login-footer">
+        &copy; 2026 Security Monitox. Todos los derechos reservados.
+      </div>
+    </div>
+  </div>
+
+  <div id="app" class="container" style="display: none;">
     <aside class="sidebar">
       <div class="brand">
         <div class="logo-icon">M</div>
         <h1>MONITOX <span>PRO</span></h1>
       </div>
       <nav>
-        <div class="nav-item active" data-tab="dashboard">
-          <span class="icon">📊</span> Dashboard
+        <div class="nav-item active" data-view="dashboard">
+          <span class="icon">📊</span>
+          <span>Dashboard</span>
         </div>
-        <div class="nav-item" data-tab="clients">
-          <span class="icon">💻</span> Equipos
+        <div class="nav-item" data-view="equipos">
+          <span class="icon">💻</span>
+          <span>Equipos</span>
         </div>
-        <div class="nav-item" data-tab="logs">
-          <span class="icon">📜</span> Registros
+        <div class="nav-item" data-view="registros">
+          <span class="icon">📜</span>
+          <span>Registros</span>
         </div>
-        <div class="nav-item" data-tab="settings">
-          <span class="icon">⚙️</span> Configuración
+        <div class="nav-item" data-view="configuracion">
+          <span class="icon">⚙️</span>
+          <span>Configuración</span>
         </div>
       </nav>
       <div class="status-panel">
@@ -58,11 +87,75 @@
         </div>
       </header>
 
-      <section class="grid-container" id="client-grid">
-        <!-- Dashboard dynamic content -->
+      <!-- Dashboard View (Default) -->
+      <section id="view-dashboard" class="content-view active">
+        <div class="grid-container" id="client-grid">
+          <!-- Cards injected by JS -->
+        </div>
+      </section>
+
+      <!-- Equipos View -->
+      <section id="view-equipos" class="content-view">
+        <div class="view-padding">
+          <h2 class="view-title">Gestión de Dispositivos</h2>
+          <div class="table-container">
+            <table class="pro-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>ID de Conexión</th>
+                  <th>Sistema Operativo</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="equipos-table-body">
+                <!-- Data injected by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Registros View -->
+      <section id="view-registros" class="content-view">
+        <div class="view-padding">
+          <h2 class="view-title">Historial de Eventos</h2>
+          <div class="log-container" id="log-list">
+            <!-- Logs injected by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Configuration View -->
+      <section id="view-configuracion" class="content-view">
+        <div class="view-padding">
+          <h2 class="view-title">Configuración del Sistema</h2>
+          <div class="config-grid">
+            <div class="config-card">
+              <h3>Seguridad</h3>
+              <p>Cambiar clave de administrador y gestionar API Keys.</p>
+              <button class="btn btn-primary" style="width: auto; padding: 10px 20px;">Actualizar Credenciales</button>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
   </div>
+  <div class="modal-viewer" id="viewer">
+    <div class="modal-header">
+      <div class="modal-title" id="viewer-title">Monitor Remoto</div>
+      <div class="modal-close" id="viewer-close">&times;</div>
+    </div>
+    <div class="modal-body">
+      <img src="" id="modal-img" alt="Vista ampliada">
+    </div>
+    <div class="modal-controls">
+      <button class="btn btn-primary" id="btn-popout">ABRIR EN VENTANA</button>
+      <button class="btn btn-danger" id="btn-close-viewer">CERRAR VISTA</button>
+    </div>
+  </div>
+
 </body>
 
 </html>

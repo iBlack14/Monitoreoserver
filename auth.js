@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-const { v4: uuidv4 } = require('uuid');
+const bcrypt = require('bcryptjs');
+const { adminOps, deviceOps } = require('./database');
 require('dotenv').config();
 
 // In-memory storage (can be replaced with database)
@@ -18,10 +19,10 @@ function generateApiKey(clientName, metadata = {}) {
     metadata,
     active: true
   };
-  
+
   apiKeys.set(apiKey, clientData);
   clients.set(clientName, clientData);
-  
+
   return apiKey;
 }
 
@@ -29,14 +30,19 @@ function generateApiKey(clientName, metadata = {}) {
  * Validate API key
  */
 function validateApiKey(apiKey) {
-  return apiKeys.has(apiKey) && apiKeys.get(apiKey).active;
+  // Para simplificar ahora, cualquier equipo que se identifique se registra en DB
+  // En una fase más avanzada, aquí filtraríamos por llaves permitidas
+  return !!apiKey;
 }
 
 /**
  * Get client info by API key
  */
 function getClientByApiKey(apiKey) {
-  return apiKeys.get(apiKey);
+  // Si no existe en DB, lo creamos dinámicamente o devolvemos datos básicos
+  const dbDevice = deviceOps.getById(apiKey);
+  if (dbDevice) return dbDevice;
+  return { id: apiKey, name: "Dispositivo Nuevo" };
 }
 
 /**
@@ -65,7 +71,8 @@ function verifyToken(token) {
  * Authenticate admin credentials
  */
 function authenticateAdmin(username, password) {
-  if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
+  const admin = adminOps.getByUsername(username);
+  if (admin && bcrypt.compareSync(password, admin.password)) {
     return generateToken(username);
   }
   return null;

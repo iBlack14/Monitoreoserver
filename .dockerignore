@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+monitox.db
+data
+.env
+.git
+.gitignore
+dashboard/dist

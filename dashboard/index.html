@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@400;700&display=swap"
     rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-mm2FP5EF.js"></script>
+  <script type="module" crossorigin src="/assets/index-DXkDf50d.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/index-BiqktHVf.css">
 </head>
 
@@ -89,8 +89,22 @@
 
       <!-- Dashboard View (Default) -->
       <section id="view-dashboard" class="content-view active">
-        <div class="grid-container" id="client-grid">
-          <!-- Cards injected by JS -->
+        <div style="display: flex; flex: 1; overflow: hidden;">
+          <div class="grid-container" id="client-grid" style="flex: 1;">
+            <!-- Cards injected by JS -->
+          </div>
+
+          <!-- Recent Activity Sidebar -->
+          <div
+            style="width: 300px; background: rgba(0,0,0,0.2); border-left: 1px solid var(--glass-border); display: flex; flex-direction: column; padding: 1.5rem;">
+            <h3
+              style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: var(--neon-cyan); margin-bottom: 1.5rem; letter-spacing: 1px;">
+              ACTIVIDAD RECIENTE</h3>
+            <div id="dashboard-mini-logs"
+              style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+              <!-- Mini logs injected by JS -->
+            </div>
+          </div>
         </div>
       </section>
 
@@ -133,9 +147,29 @@
           <h2 class="view-title">Configuración del Sistema</h2>
           <div class="config-grid">
             <div class="config-card">
-              <h3>Seguridad</h3>
-              <p>Cambiar clave de administrador y gestionar API Keys.</p>
-              <button class="btn btn-primary" style="width: auto; padding: 10px 20px;">Actualizar Credenciales</button>
+              <h3>Seguridad Administrativa</h3>
+              <p>Actualiza tu contraseña de acceso a la consola.</p>
+
+              <div class="login-form" style="margin-top: 20px; max-width: 350px;">
+                <div class="input-group">
+                  <label>Contraseña Actual</label>
+                  <input type="password" id="config-old-pass" placeholder="••••••••">
+                </div>
+                <div class="input-group">
+                  <label>Nueva Contraseña</label>
+                  <input type="password" id="config-new-pass" placeholder="••••••••">
+                </div>
+                <div class="input-group">
+                  <label>Confirmar Nueva Contraseña</label>
+                  <input type="password" id="config-confirm-pass" placeholder="••••••••">
+                </div>
+                <button id="btn-change-pass" class="btn btn-primary" style="margin-top: 10px;">GUARDAR CAMBIOS</button>
+              </div>
+
+              <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.05); margin: 30px 0;">
+
+              <button class="btn btn-danger" onclick="window.dashboard.logout()"
+                style="width: auto; padding: 10px 30px;">CERRAR SESIÓN</button>
             </div>
           </div>
         </div>

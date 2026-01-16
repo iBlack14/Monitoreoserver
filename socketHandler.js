@@ -103,6 +103,7 @@ function setupSocketHandlers(io) {
                     socketId: socket.id,
                     name: client.name,
                     screenshot: data.screenshot,
+                    stats: data.stats, // Pasar las estadísticas (CPU, RAM, Procesos)
                     timestamp: data.timestamp,
                     quality: data.quality
                 });

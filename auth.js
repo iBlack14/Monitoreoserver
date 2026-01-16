@@ -79,6 +79,18 @@ function authenticateAdmin(username, password) {
 }
 
 /**
+ * Change admin password
+ */
+function changeAdminPassword(username, oldPassword, newPassword) {
+  const admin = adminOps.getByUsername(username);
+  if (admin && bcrypt.compareSync(oldPassword, admin.password)) {
+    adminOps.updatePassword(username, newPassword);
+    return true;
+  }
+  return false;
+}
+
+/**
  * Get all registered clients
  */
 function getAllClients() {
@@ -116,6 +128,7 @@ module.exports = {
   generateToken,
   verifyToken,
   authenticateAdmin,
+  changeAdminPassword,
   getAllClients,
   deactivateClient,
   removeClient

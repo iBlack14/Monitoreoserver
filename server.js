@@ -52,6 +52,24 @@ app.get('/api/health', (req, res) => {
     });
 });
 
+// Change password
+app.post('/api/admin/change-password', (req, res) => {
+    const { oldPassword, newPassword, token } = req.body;
+
+    const decoded = auth.verifyToken(token);
+    if (!decoded) {
+        return res.status(401).json({ success: false, message: 'No autorizado' });
+    }
+
+    const result = auth.changeAdminPassword(decoded.username, oldPassword, newPassword);
+
+    if (result) {
+        res.json({ success: true, message: 'Contraseña actualizada correctamente' });
+    } else {
+        res.status(400).json({ success: false, message: 'Contraseña actual incorrecta' });
+    }
+});
+
 // Admin login
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;

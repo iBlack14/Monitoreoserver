@@ -19,6 +19,7 @@ function setupSocketHandlers(io) {
                 return;
             }
 
+            const client = getClientByApiKey(apiKey);
             const dbDevice = deviceOps.getById(apiKey);
             const group = dbDevice ? dbDevice.group_name : 'General';
 
@@ -37,9 +38,9 @@ function setupSocketHandlers(io) {
             socket.clientData = clientData;
             socket.join('clients');
 
-            // Persistence: Upsert device to DB
-            deviceOps.upsert(socket.id, client.name, JSON.stringify(clientInfo));
-            logOps.add(socket.id, 'success', `Dispositivo conectado: ${client.name}`);
+            // Persistence: Upsert device to DB using persistent API Key
+            deviceOps.upsert(apiKey, client.name, JSON.stringify(clientInfo));
+            logOps.add(apiKey, 'success', `Dispositivo conectado: ${client.name}`);
 
             console.log(`[Client] Autenticado: ${client.name} (${socket.id})`);
 
@@ -48,7 +49,6 @@ function setupSocketHandlers(io) {
                 clientId: socket.id
             });
 
-            // Notify all admins about new client
             // Notify all admins about new client
             broadcastToAdmins('client-connected', {
                 socketId: socket.id,
@@ -188,7 +188,7 @@ function setupSocketHandlers(io) {
                 const client = activeClients.get(socket.id);
                 activeClients.delete(socket.id);
 
-                logOps.add(socket.id, 'warn', `Dispositivo desconectado: ${client.name}`);
+                logOps.add(client.apiKey, 'warn', `Dispositivo desconectado: ${client.name}`);
                 console.log(`[Client] Desconectado: ${client.name}`);
 
                 // Notify admins

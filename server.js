@@ -144,6 +144,10 @@ app.post('/api/db/devices/group', (req, res) => {
     try {
         const { deviceOps } = require('./database');
         deviceOps.updateGroup(id, group);
+
+        // Sync memory map so refreshes work correctly
+        socketUtils.updateMemoryGroup(id, group);
+
         res.json({ success: true, message: 'Grupo actualizado' });
     } catch (err) {
         console.error(err);

@@ -220,7 +220,15 @@ function setupSocketHandlers(io) {
     return {
         getActiveClients: () => Array.from(activeClients.values()),
         getAdminCount: () => adminSockets.size,
-        broadcastToAdmins
+        broadcastToAdmins,
+        updateMemoryGroup: (apiKey, newGroup) => {
+            // Update group for all active sockets with this apiKey
+            activeClients.forEach(client => {
+                if (client.apiKey === apiKey) {
+                    client.group = newGroup;
+                }
+            });
+        }
     };
 }
 

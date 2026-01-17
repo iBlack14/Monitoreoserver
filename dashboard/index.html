@@ -10,8 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@400;700&display=swap"
     rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-Dj1gD6xr.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-oP4KOdZE.css">
+  <script type="module" crossorigin src="/assets/index-Dl7ZEfWw.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-ozxVuum8.css">
 </head>
 
 <body>
@@ -186,17 +186,43 @@
       </section>
     </main>
   </div>
-  <div class="modal-viewer" id="viewer">
-    <div class="modal-header">
-      <div class="modal-title" id="viewer-title">Monitor Remoto</div>
-      <div class="modal-close" id="viewer-close">&times;</div>
+  <!-- Viewer Modal -->
+  <div id="viewer" class="modal-overlay">
+    <div class="modal-content large">
+      <div class="modal-header">
+        <h3 id="viewer-title">MONITOR: CARGANDO...</h3>
+        <button class="close-btn" id="viewer-close">&times;</button>
+      </div>
+      <div class="modal-body viewer-body">
+        <img src="" id="modal-img" alt="Vista ampliada">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="btn-popout" style="width: auto;">CONSOLA FLOTANTE</button>
+        <button class="btn btn-secondary" id="btn-close-viewer" style="width: auto;">CERRAR</button>
+      </div>
     </div>
-    <div class="modal-body">
-      <img src="" id="modal-img" alt="Vista ampliada">
-    </div>
-    <div class="modal-controls">
-      <button class="btn btn-primary" id="btn-popout">ABRIR EN VENTANA</button>
-      <button class="btn btn-danger" id="btn-close-viewer">CERRAR VISTA</button>
+  </div>
+
+  <!-- Group Modal -->
+  <div id="group-modal" class="modal-overlay">
+    <div class="modal-content small">
+      <div class="modal-header">
+        <h3>📂 ASIGNAR GRUPO</h3>
+        <button class="close-btn" id="group-modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 15px; font-size: 0.9rem; color: var(--text-secondary);">Elige un grupo existente o
+          escribe uno nuevo.</p>
+        <div class="form-group">
+          <label>Nombre del Grupo</label>
+          <input type="text" id="group-input" list="existing-groups" placeholder="Ej: Administracion, Ventas...">
+          <datalist id="existing-groups"></datalist>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btn-cancel-group">CANCELAR</button>
+        <button class="btn btn-primary" id="btn-save-group">GUARDAR CAMBIOS</button>
+      </div>
     </div>
   </div>
 

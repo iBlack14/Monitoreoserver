@@ -142,13 +142,40 @@ app.post('/api/db/devices/group', (req, res) => {
     }
 
     try {
-        const { deviceOps } = require('./database');
         deviceOps.updateGroup(id, group);
 
         // Sync memory map so refreshes work correctly
         socketUtils.updateMemoryGroup(id, group);
 
         res.json({ success: true, message: 'Grupo actualizado' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: 'Error interno' });
+    }
+});
+
+// NUEVO: Rename device
+app.post('/api/db/devices/rename', (req, res) => {
+    const { id, name, token } = req.body;
+    if (!auth.verifyToken(token)) return res.status(401).json({ success: false, message: 'No autorizado' });
+
+    try {
+        deviceOps.updateName(id, name);
+        res.json({ success: true, message: 'Nombre actualizado' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: 'Error interno' });
+    }
+});
+
+// NUEVO: Delete device (Cleanup)
+app.delete('/api/db/devices', (req, res) => {
+    const { id, token } = req.body;
+    if (!auth.verifyToken(token)) return res.status(401).json({ success: false, message: 'No autorizado' });
+
+    try {
+        deviceOps.deleteDevice(id);
+        res.json({ success: true, message: 'Dispositivo eliminado' });
     } catch (err) {
         console.error(err);
         res.status(500).json({ success: false, message: 'Error interno' });

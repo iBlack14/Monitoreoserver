@@ -2,72 +2,60 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MONITOX PRO | Admin Control</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MONITOX PRO | Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@400;700&display=swap"
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap"
     rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-B-aNQNca.js"></script>
+  <script type="module" crossorigin src="/assets/index-BOzpfarI.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/index-ozxVuum8.css">
 </head>
 
 <body>
-  <!-- Login Screen -->
   <div id="login-screen" class="login-overlay">
     <div class="login-box">
       <div class="login-header">
         <div class="login-logo">M</div>
         <h2>MONITOX <span>PRO</span></h2>
-        <p>CONSOLA DE ADMINISTRACIÓN</p>
+        <p>ENTERPRISE MONITORING SYSTEM</p>
       </div>
       <div class="login-form">
         <div class="input-group">
-          <label>Usuario</label>
-          <input type="text" id="username" placeholder="Ingrese su usuario">
+          <label>Identificador</label>
+          <input type="text" id="username" placeholder="Usuario Administrador" value="admin">
         </div>
         <div class="input-group">
-          <label>Contraseña</label>
+          <label>Token de Acceso</label>
           <input type="password" id="password" placeholder="••••••••">
         </div>
         <button id="login-btn" class="btn btn-primary login-btn">INGRESAR AL SISTEMA</button>
       </div>
       <div class="login-footer">
-        &copy; 2026 Security Monitox. Todos los derechos reservados.
+        &copy; 2026 MONITOX PRO INTERNACIONAL. SECURE ACCESS ONLY.
       </div>
     </div>
   </div>
 
-  <div id="app" class="container" style="display: none;">
+  <div class="container" style="display:none;">
     <aside class="sidebar">
-      <div class="brand">
-        <div class="logo-icon">M</div>
-        <h1>MONITOX <span>PRO</span></h1>
+      <div class="sidebar-header">
+        <div class="logo">M</div>
+        <div class="brand">MONITOX <span>PRO</span></div>
       </div>
       <nav>
-        <div class="nav-item active" data-view="dashboard">
-          <span class="icon">📊</span>
-          <span>Dashboard</span>
-        </div>
-        <div class="nav-item" data-view="equipos">
-          <span class="icon">💻</span>
-          <span>Equipos</span>
-        </div>
-        <div class="nav-item" data-view="registros">
-          <span class="icon">📜</span>
-          <span>Registros</span>
-        </div>
-        <div class="nav-item" data-view="configuracion">
-          <span class="icon">⚙️</span>
-          <span>Configuración</span>
-        </div>
+        <div class="nav-item active" data-view="dashboard">📊 Dashboard</div>
+        <div class="nav-item" data-view="equipos">🖥️ Equipos</div>
+        <div class="nav-item" data-view="registros">📜 Registros</div>
+        <div class="nav-item" data-view="config">⚙️ Configuración</div>
       </nav>
+
       <div class="status-panel">
         <div class="status-item">
           <span>Servidor:</span>
-          <span class="status-indicator online">ONLINE</span>
+          <span class="status-indicator online">ESTABLECIENDO...</span>
         </div>
         <div class="status-item">
           <span>Activos:</span>
@@ -76,116 +64,96 @@
       </div>
     </aside>
 
-    <main class="content">
+    <main class="main-content">
       <header class="top-bar">
         <div class="search-box">
           <input type="text" placeholder="Buscar equipo..." id="search-input">
         </div>
-        <div class="user-profile">
-          <span class="role">MODO ADMIN</span>
-          <div class="avatar">A</div>
+        <div class="admin-profile">
+          <span class="admin-label">MODO ADMIN</span>
+          <div class="admin-avatar">A</div>
         </div>
       </header>
 
-      <!-- Dashboard View (Default) -->
       <section id="view-dashboard" class="content-view active">
-        <!-- Group Tabs -->
         <div class="tabs-container" id="group-tabs">
-          <div class="tab-item active" data-group="all">TODOS</div>
-          <div class="tab-item" data-group="General">GENERAL</div>
+          <div class="tab-item active" onclick="window.dashboard.setGroup('all')">TODOS</div>
         </div>
 
-        <!-- Empty State -->
         <div id="empty-state" class="empty-state">
-          <div class="empty-state-icon">📡</div>
-          <h2 class="empty-state-title">Sistema de Monitoreo Activo</h2>
-          <p class="empty-state-text">No hay dispositivos conectados en este momento.</p>
-          <p class="empty-state-hint">Los equipos aparecerán aquí automáticamente cuando se conecten al servidor.</p>
-          <div class="empty-state-stats">
-            <div class="empty-stat">
-              <span class="empty-stat-label">Servidor</span>
-              <span class="empty-stat-value online">ONLINE</span>
-            </div>
-            <div class="empty-stat">
-              <span class="empty-stat-label">Esperando conexiones...</span>
-              <span class="empty-stat-value">🔄</span>
-            </div>
-          </div>
+          <h3>SIN CONEXIONES ACTIVAS</h3>
+          <p>Los dispositivos aparecerán aquí automáticamente una vez se vinculen.</p>
         </div>
 
-        <div class="grid-container" id="client-grid">
-          <!-- Cards injected by JS -->
+        <div class="client-grid" id="client-grid"></div>
+
+        <div class="mini-logs-container">
+          <div class="log-header">REGISTROS RECIENTES</div>
+          <div id="dashboard-mini-logs" class="mini-logs-list"></div>
         </div>
       </section>
 
-      <!-- Equipos View -->
       <section id="view-equipos" class="content-view">
-        <div class="view-padding">
-          <h2 class="view-title">Gestión de Dispositivos</h2>
-          <div class="table-container">
-            <table class="pro-table">
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>ID de Conexión</th>
-                  <th>Sistema Operativo</th>
-                  <th>Estado</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody id="equipos-table-body">
-                <!-- Data injected by JS -->
-              </tbody>
-            </table>
-          </div>
+        <div class="view-header">
+          <h1>GESTIÓN DE EQUIPOS</h1>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>ID Persistente</th>
+                <th>Grupo</th>
+                <th>Sistema</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="equipos-table-body"></tbody>
+          </table>
         </div>
       </section>
 
-      <!-- Registros View -->
       <section id="view-registros" class="content-view">
-        <div class="view-padding">
-          <h2 class="view-title">Historial de Eventos</h2>
-          <div class="log-container" id="log-list">
-            <!-- Logs injected by JS -->
-          </div>
+        <div class="view-header">
+          <h1>HISTORIAL DE ACTIVIDAD</h1>
         </div>
+        <div id="log-list" class="log-list"></div>
       </section>
 
-      <!-- Configuration View -->
-      <section id="view-configuracion" class="content-view">
-        <div class="view-padding">
-          <h2 class="view-title">Configuración del Sistema</h2>
-          <div class="config-grid">
-            <div class="config-card">
-              <h3>Seguridad Administrativa</h3>
-              <p>Actualiza tu contraseña de acceso a la consola.</p>
-
-              <div class="login-form" style="margin-top: 20px; max-width: 350px;">
-                <div class="input-group">
-                  <label>Contraseña Actual</label>
-                  <input type="password" id="config-old-pass" placeholder="••••••••">
-                </div>
-                <div class="input-group">
-                  <label>Nueva Contraseña</label>
-                  <input type="password" id="config-new-pass" placeholder="••••••••">
-                </div>
-                <div class="input-group">
-                  <label>Confirmar Nueva Contraseña</label>
-                  <input type="password" id="config-confirm-pass" placeholder="••••••••">
-                </div>
-                <button id="btn-change-pass" class="btn btn-primary" style="margin-top: 10px;">GUARDAR CAMBIOS</button>
-              </div>
-
-              <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.05); margin: 30px 0;">
-
-              <button class="btn btn-danger" onclick="window.dashboard.logout()"
-                style="width: auto; padding: 10px 30px;">CERRAR SESIÓN</button>
+      <section id="view-config" class="content-view">
+        <div class="view-header">
+          <h1>CONFIGURACIÓN DEL SISTEMA</h1>
+        </div>
+        <div class="config-card">
+          <h3>SEGURIDAD ADMINISTRATIVA</h3>
+          <div class="config-form">
+            <div class="form-group">
+              <label>CONTRASEÑA ACTUAL</label>
+              <input type="password" id="config-old-pass">
             </div>
+            <div class="form-group">
+              <label>NUEVA CONTRASEÑA</label>
+              <input type="password" id="config-new-pass">
+            </div>
+            <div class="form-group">
+              <label>CONFIRMAR CONTRASEÑA</label>
+              <input type="password" id="config-confirm-pass">
+            </div>
+            <div class="config-actions">
+              <button class="btn btn-primary" id="btn-change-pass">GUARDAR CAMBIOS</button>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.05); margin: 30px 0;">
+
+            <button class="btn btn-danger" onclick="window.dashboard.logout()"
+              style="width: auto; padding: 10px 30px;">CERRAR SESIÓN</button>
           </div>
         </div>
       </section>
     </main>
   </div>
+
   <!-- Viewer Modal -->
   <div id="viewer" class="modal-overlay">
     <div class="modal-content large">
@@ -222,6 +190,35 @@
       <div class="modal-footer">
         <button class="btn btn-secondary" id="btn-cancel-group">CANCELAR</button>
         <button class="btn btn-primary" id="btn-save-group">GUARDAR CAMBIOS</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Device Options Modal -->
+  <div id="device-modal" class="modal-overlay">
+    <div class="modal-content small">
+      <div class="modal-header">
+        <h3>⚙️ OPCIONES DE EQUIPO</h3>
+        <button class="close-btn" id="device-modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nombre del Dispositivo</label>
+          <input type="text" id="device-name-input" placeholder="Ej: PC-CONTABILIDAD">
+        </div>
+        <hr style="border:0; border-top: 1px solid rgba(255,255,255,0.05); margin: 20px 0;">
+        <div
+          style="background: rgba(255,50,50,0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,50,50,0.1);">
+          <p style="color: #ff4444; font-size: 0.8rem; margin-bottom: 10px;"><b>ZONA DE PELIGRO:</b> Eliminar este
+            dispositivo borrará permanentemente sus registros e historial.</p>
+          <button class="btn btn-secondary" id="btn-delete-device"
+            style="background: rgba(255,0,0,0.1); color: #ff4444; border-color: rgba(255,0,0,0.2); width: 100%;">ELIMINAR
+            ESTE EQUIPO</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btn-cancel-device">CANCELAR</button>
+        <button class="btn btn-primary" id="btn-save-device">GUARDAR</button>
       </div>
     </div>
   </div>

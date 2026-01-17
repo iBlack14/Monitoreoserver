@@ -71,7 +71,7 @@ const deviceOps = {
             INSERT INTO devices (id, name, os_info, last_seen) 
             VALUES (?, ?, ?, CURRENT_TIMESTAMP)
             ON CONFLICT(id) DO UPDATE SET 
-                name = excluded.name,
+                name = CASE WHEN devices.name LIKE 'DISPOSITIVO%' THEN excluded.name ELSE devices.name END,
                 os_info = excluded.os_info,
                 last_seen = CURRENT_TIMESTAMP
         `);
@@ -81,6 +81,13 @@ const deviceOps = {
     getAll: () => db.prepare('SELECT * FROM devices ORDER BY last_seen DESC').all(),
     updateGroup: (id, groupName) => {
         return db.prepare('UPDATE devices SET group_name = ? WHERE id = ?').run(groupName, id);
+    },
+    updateName: (id, newName) => {
+        return db.prepare('UPDATE devices SET name = ? WHERE id = ?').run(newName, id);
+    },
+    deleteDevice: (id) => {
+        db.prepare('DELETE FROM logs WHERE device_id = ?').run(id);
+        return db.prepare('DELETE FROM devices WHERE id = ?').run(id);
     }
 };
 

@@ -10,8 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@400;700&display=swap"
     rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-DXkDf50d.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-BiqktHVf.css">
+  <script type="module" crossorigin src="/assets/index-f-zegzeO.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-CovpbH8Q.css">
 </head>
 
 <body>
@@ -89,22 +89,26 @@
 
       <!-- Dashboard View (Default) -->
       <section id="view-dashboard" class="content-view active">
-        <div style="display: flex; flex: 1; overflow: hidden;">
-          <div class="grid-container" id="client-grid" style="flex: 1;">
-            <!-- Cards injected by JS -->
-          </div>
-
-          <!-- Recent Activity Sidebar -->
-          <div
-            style="width: 300px; background: rgba(0,0,0,0.2); border-left: 1px solid var(--glass-border); display: flex; flex-direction: column; padding: 1.5rem;">
-            <h3
-              style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: var(--neon-cyan); margin-bottom: 1.5rem; letter-spacing: 1px;">
-              ACTIVIDAD RECIENTE</h3>
-            <div id="dashboard-mini-logs"
-              style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
-              <!-- Mini logs injected by JS -->
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state">
+          <div class="empty-state-icon">📡</div>
+          <h2 class="empty-state-title">Sistema de Monitoreo Activo</h2>
+          <p class="empty-state-text">No hay dispositivos conectados en este momento.</p>
+          <p class="empty-state-hint">Los equipos aparecerán aquí automáticamente cuando se conecten al servidor.</p>
+          <div class="empty-state-stats">
+            <div class="empty-stat">
+              <span class="empty-stat-label">Servidor</span>
+              <span class="empty-stat-value online">ONLINE</span>
+            </div>
+            <div class="empty-stat">
+              <span class="empty-stat-label">Esperando conexiones...</span>
+              <span class="empty-stat-value">🔄</span>
             </div>
           </div>
+        </div>
+
+        <div class="grid-container" id="client-grid">
+          <!-- Cards injected by JS -->
         </div>
       </section>
 

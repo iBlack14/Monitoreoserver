@@ -27,11 +27,19 @@ function initDb() {
         CREATE TABLE IF NOT EXISTS devices (
             id TEXT PRIMARY KEY, -- Esto será la API Key
             name TEXT NOT NULL,
+            group_name TEXT DEFAULT 'General',
             os_info TEXT,
             last_seen DATETIME DEFAULT CURRENT_TIMESTAMP,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     `).run();
+
+    // Migración para añadir columna group_name si ya existe la tabla
+    try {
+        db.prepare('ALTER TABLE devices ADD COLUMN group_name TEXT DEFAULT "General"').run();
+    } catch (error) {
+        // Ignorar error si la columna ya existe
+    }
 
     // Tabla de Registros (Logs)
     db.prepare(`
@@ -70,7 +78,10 @@ const deviceOps = {
         return stmt.run(id, name, osInfo);
     },
     getById: (id) => db.prepare('SELECT * FROM devices WHERE id = ?').get(id),
-    getAll: () => db.prepare('SELECT * FROM devices ORDER BY last_seen DESC').all()
+    getAll: () => db.prepare('SELECT * FROM devices ORDER BY last_seen DESC').all(),
+    updateGroup: (id, groupName) => {
+        return db.prepare('UPDATE devices SET group_name = ? WHERE id = ?').run(groupName, id);
+    }
 };
 
 // Funciones para Logs

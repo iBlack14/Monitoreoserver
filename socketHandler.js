@@ -19,11 +19,14 @@ function setupSocketHandlers(io) {
                 return;
             }
 
-            const client = getClientByApiKey(apiKey);
+            const dbDevice = deviceOps.getById(apiKey);
+            const group = dbDevice ? dbDevice.group_name : 'General';
+
             const clientData = {
                 socketId: socket.id,
                 apiKey,
                 name: client.name,
+                group: group,
                 info: clientInfo || {},
                 connectedAt: new Date(),
                 lastScreenshot: null,
@@ -46,9 +49,12 @@ function setupSocketHandlers(io) {
             });
 
             // Notify all admins about new client
+            // Notify all admins about new client
             broadcastToAdmins('client-connected', {
                 socketId: socket.id,
+                id: apiKey, // Persistent ID
                 name: client.name,
+                group: group,
                 info: clientInfo,
                 connectedAt: clientData.connectedAt
             });
@@ -79,7 +85,9 @@ function setupSocketHandlers(io) {
             // Send current active clients to admin
             const clientsList = Array.from(activeClients.values()).map(c => ({
                 socketId: c.socketId,
+                id: c.apiKey, // Persistent ID
                 name: c.name,
+                group: c.group,
                 info: c.info,
                 connectedAt: c.connectedAt,
                 status: c.status

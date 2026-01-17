@@ -132,6 +132,25 @@ app.get('/api/db/logs', (req, res) => {
     res.json({ success: true, logs });
 });
 
+// Update device group
+app.post('/api/db/devices/group', (req, res) => {
+    const { id, group, token } = req.body;
+
+    // Verify admin token
+    if (!auth.verifyToken(token)) {
+        return res.status(401).json({ success: false, message: 'No autorizado' });
+    }
+
+    try {
+        const { deviceOps } = require('./database');
+        deviceOps.updateGroup(id, group);
+        res.json({ success: true, message: 'Grupo actualizado' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: 'Error interno' });
+    }
+});
+
 // Deactivate a client
 app.post('/api/clients/deactivate', (req, res) => {
     const { apiKey } = req.body;

@@ -8,10 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800&family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap"
     rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-BOzpfarI.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-ozxVuum8.css">
+  <script type="module" crossorigin src="/assets/index-BLdlpJ1b.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-f-rG6AEr.css">
 </head>
 
 <body>
@@ -39,11 +39,12 @@
     </div>
   </div>
 
-  <div class="container" style="display:none;">
+  <!-- Note: CSS uses #app as the main container flexbox -->
+  <div id="app" style="display:none;">
     <aside class="sidebar">
-      <div class="sidebar-header">
-        <div class="logo">M</div>
-        <div class="brand">MONITOX <span>PRO</span></div>
+      <div class="brand">
+        <div class="logo-icon">M</div>
+        <h1>MONITOX <span>PRO</span></h1>
       </div>
       <nav>
         <div class="nav-item active" data-view="dashboard">📊 Dashboard</div>
@@ -64,7 +65,8 @@
       </div>
     </aside>
 
-    <main class="main-content">
+    <!-- Main Content Area: CSS class is .content -->
+    <main class="content">
       <header class="top-bar">
         <div class="search-box">
           <input type="text" placeholder="Buscar equipo..." id="search-input">
@@ -86,11 +88,6 @@
         </div>
 
         <div class="client-grid" id="client-grid"></div>
-
-        <div class="mini-logs-container">
-          <div class="log-header">REGISTROS RECIENTES</div>
-          <div id="dashboard-mini-logs" class="mini-logs-list"></div>
-        </div>
       </section>
 
       <section id="view-equipos" class="content-view">
